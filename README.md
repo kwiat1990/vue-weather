@@ -1,29 +1,16 @@
 # vue-weather
 
-## Project setup
-```
-npm install
-```
+With this mini poject I want to showcase my frontend skillset and the way I think about developing modern apps. 
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+As matter of preference I like to work with real data, therefore the frontend uses API from [Open Weather](https://openweathermap.org). 
 
-### Compiles and minifies for production
-```
-npm run build
-```
+With help of the [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (write tests before code), I ensure that any of commited changes do not introduce new bugs or break existing code.
 
-### Run your unit tests
-```
-npm run test:unit
-```
+The source code can be seen here: https://github.com/kwiat1990/vue-weather.
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Tech stack 
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- [Vue.js (v3)](https://vuejs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind (v2)](https://getbootstrap.com/)
+- [Ionic Icons](https://ionic.io/ionicons)‚
