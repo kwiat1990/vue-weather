@@ -1,12 +1,6 @@
-import { ref, Ref } from "vue";
+import { ref } from "vue";
 
-interface UseGeolocationType {
-  coords: Ref<GeolocationPosition["coords"] | null>;
-  error: Ref<GeolocationPositionError | null>;
-  isSupported: boolean;
-}
-
-export const useGeoLocation = (): UseGeolocationType => {
+export const useGeoLocation = () => {
   const coords = ref<GeolocationPosition["coords"] | null>(null);
   const error = ref<GeolocationPositionError | null>(null);
   const isSupported = "geolocation" in navigator;
