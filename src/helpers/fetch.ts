@@ -4,14 +4,17 @@ interface ApiResponse<T> {
 }
 
 const request = async <T>(
-  url: string,
+  endpoint: string,
   config?: RequestInit
 ): Promise<ApiResponse<T>> => {
   let data = null;
   let error = null;
 
   try {
-    const response = await fetch(url, config);
+    const response = await fetch(
+      `${process.env.VUE_APP_API_URL}/${endpoint}`,
+      config
+    );
     if (response.ok) {
       data = await response.json();
     } else {
@@ -25,7 +28,7 @@ const request = async <T>(
 };
 
 export const getJSON = async <T>(url: string) => request<T>(url);
-export const postJSON = async <TBody extends BodyInit, T>(
+export const postJSON = async <Config extends BodyInit, T>(
   url: string,
-  body: TBody
+  body: Config
 ) => request<T>(url, { method: "POST", body });

@@ -1,7 +1,8 @@
+import { Coords } from "@/types/coords.type";
 import { ref } from "vue";
 
 export const useGeoLocation = () => {
-  const coords = ref<GeolocationPosition["coords"] | null>(null);
+  const coords = ref<Coords | null>(null);
   const error = ref<GeolocationPositionError | null>(null);
   const isLoading = ref(false);
   const isSupported = "geolocation" in navigator;
@@ -15,7 +16,8 @@ export const useGeoLocation = () => {
   const setLoading = (inProgress = true) => (isLoading.value = inProgress);
 
   const onSuccess = (pos: GeolocationPosition) => {
-    coords.value = pos.coords;
+    const { longitude, latitude } = pos.coords;
+    coords.value = { lon: longitude, lat: latitude };
     error.value = null;
     setLoading(false);
   };

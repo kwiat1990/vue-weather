@@ -1,39 +1,51 @@
 <template>
   <form @submit.prevent="emitSearch">
     <button type="submit">Search</button>
-    <input type="text" v-model="searchTerm" />
-    <hr />
-    {{ geoposition.coords }}
+    <input
+      class="border-2 border-black"
+      type="text"
+      v-model.lazy.trim="searchTerm"
+      :disabled="disabled"
+    />
   </form>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { useGeoLocation } from "@/composables/useGeolocation";
+import { defineComponent, ref, watchEffect } from "vue";
 
 export default defineComponent({
   name: "Searchbox",
+
+  props: {
+    city: {
+      type: String,
+      default: "",
+    },
+    disabled: Boolean,
+  },
 
   emits: {
     // Perform runtime validation
     onSearch: (payload: string) => payload.length > 0,
   },
 
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const searchTerm = ref("");
-    const geoposition = useGeoLocation();
+
+    watchEffect(() => {
+      searchTerm.value = props.city;
+    });
 
     const emitSearch = () => {
-      emit("onSearch", searchTerm.value);
+      if (searchTerm.value) {
+        emit("onSearch", searchTerm.value);
+      }
     };
 
     return {
       emitSearch,
       searchTerm,
-      geoposition,
     };
   },
 });
 </script>
-
-<style scoped></style>
