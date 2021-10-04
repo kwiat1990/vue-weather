@@ -1,6 +1,9 @@
+import { transformForecastData } from "@/dataleyer/forecast.layer";
 import { getJSON } from "@/helpers/fetch";
+import { WeatherResponse } from "@/types/api/weather.types";
+import { ApiResponse } from "@/types/apiResponse.types";
 import { Coords } from "@/types/coords.type";
-import { WeatherResponse } from "@/types/weather.types";
+import { Forecast } from "@/types/forecast.type";
 import { ref } from "vue";
 
 const buildURL = (path: string) => {
@@ -17,9 +20,10 @@ const getByName = (city: string) => {
   return getJSON<WeatherResponse>(buildURL(`q=${city}`));
 };
 
+// TODO: Perhaps service should only make api calls and use "useForecast" composable to save transformed data
 export const useWeatherService = () => {
   const errorMessage = ref("");
-  const forecast = ref<WeatherResponse | null>(null);
+  const forecast = ref<Forecast | null>(null);
 
   const getWeatheryByCoords = async (coords: Coords) => {
     const res = await getByCoords(coords);
@@ -31,9 +35,9 @@ export const useWeatherService = () => {
     handleWeatherResponse(res);
   };
 
-  const handleWeatherResponse = (res: any) => {
+  const handleWeatherResponse = (res: ApiResponse<WeatherResponse>): void => {
     if (res.data) {
-      forecast.value = res.data;
+      forecast.value = transformForecastData(res.data);
       errorMessage.value = "";
     } else {
       errorMessage.value = res.error;

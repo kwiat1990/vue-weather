@@ -50,7 +50,7 @@ export default defineComponent({
 
     const onInitialGeolocation = () => {
       if (!forecast.value && coords.value) getWeatheryByCoords(coords.value);
-      city.value = forecast.value?.name || "";
+      city.value = forecast.value?.city || "";
     };
 
     watchEffect(() => {

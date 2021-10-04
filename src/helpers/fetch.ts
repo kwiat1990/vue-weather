@@ -1,7 +1,4 @@
-interface ApiResponse<T> {
-  data: T;
-  error: string;
-}
+import { ApiResponse } from "@/types/apiResponse.types";
 
 const request = async <T>(
   endpoint: string,
