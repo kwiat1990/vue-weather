@@ -37,11 +37,11 @@
 <script lang="ts">
 import Searchbox from "@/components/Searchbox.vue";
 import Weather from "@/components/Weather.vue";
-import { useGeoLocation } from "@/composables/useGeolocation";
 import { useFavs } from "@/composables/useFavs";
+import { useGeoLocation } from "@/composables/useGeolocation";
 import { useWeatherService } from "@/services/weather.service";
-import { computed, defineComponent, onMounted, ref, watchEffect } from "vue";
 import { Forecast } from "@/types/forecast.type";
+import { computed, defineComponent, onMounted, ref, watchEffect } from "vue";
 
 export default defineComponent({
   name: "Home",
@@ -56,13 +56,13 @@ export default defineComponent({
     const { getWeatheryByCoords, getWeatheryByCity, errorMessage } =
       useWeatherService();
 
-    onMounted(() => {
-      locate();
-    });
-
     const errorToDisplay = computed(() => {
       const isBeforeWeatherFetch = !forecast.value && !errorMessage.value;
       return isBeforeWeatherFetch ? error.value?.message : errorMessage.value;
+    });
+
+    onMounted(() => {
+      locate();
     });
 
     const onSearch = async (city: string) => {

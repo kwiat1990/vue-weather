@@ -6,19 +6,19 @@
 
     <button
       v-if="state.size > 0"
-      class="px-2 py-4 mb-4 text-white bg-blue-700 hover:bg-blue-900 rounded-xl"
+      class="px-4 py-2 mb-4 text-white bg-blue-700 hover:bg-blue-900 rounded-xl"
       @click="reset"
     >
       Remove all cities
     </button>
 
     <Weather
-      :forecast="forecast"
-      v-for="forecast in forecasts"
-      :key="forecast.city"
+      :forecast="getForecast(city)"
+      v-for="city in state"
+      :key="city"
       class="mb-8"
     >
-      <button aria-label="Remove city from your fav list" @click="remove('')">
+      <button aria-label="Remove city from your fav list" @click="remove(city)">
         <ion-icon
           name="trash-outline"
           size="large"
@@ -53,12 +53,19 @@ export default defineComponent({
       });
     }
 
+    const getForecast = (name: string): Forecast | [] => {
+      return (
+        Array.from(forecasts.value).find(({ city }) => city === name) || []
+      );
+    };
+
     return {
       forecasts,
       remove,
       reset,
       state,
       errorMessage,
+      getForecast,
     };
   },
 });
