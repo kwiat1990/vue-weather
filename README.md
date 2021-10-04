@@ -4,8 +4,6 @@ With this mini poject I want to showcase my frontend skillset and the way I thin
 
 As matter of preference I like to work with real data, therefore the frontend uses API from [Open Weather](https://openweathermap.org). 
 
-With help of the [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) (write tests before code), I ensure that any of commited changes do not introduce new bugs or break existing code.
-
 The source code can be seen here: https://github.com/kwiat1990/vue-weather.
 
 ## Tech stack 

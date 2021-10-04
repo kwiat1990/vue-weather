@@ -19,7 +19,7 @@ const getByName = (city: string) => {
 
 export const useWeatherService = () => {
   const errorMessage = ref("");
-  const weatherData = ref<WeatherResponse | null>(null);
+  const forecast = ref<WeatherResponse | null>(null);
 
   const getWeatheryByCoords = async (coords: Coords) => {
     const res = await getByCoords(coords);
@@ -33,11 +33,11 @@ export const useWeatherService = () => {
 
   const handleWeatherResponse = (res: any) => {
     if (res.data) {
-      weatherData.value = res.data;
+      forecast.value = res.data;
       errorMessage.value = "";
     } else {
       errorMessage.value = res.error;
-      weatherData.value = null;
+      forecast.value = null;
     }
   };
 
@@ -45,6 +45,6 @@ export const useWeatherService = () => {
     getWeatheryByCoords,
     getWeatheryByCity,
     errorMessage,
-    weatherData,
+    forecast,
   };
 };
