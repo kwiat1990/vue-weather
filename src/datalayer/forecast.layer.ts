@@ -1,12 +1,15 @@
 import { WeatherResponse } from "@/types/api/weather.types";
 import { Forecast } from "@/types/forecast.type";
 
-export const transformForecastData = (response: WeatherResponse): Forecast => {
+export const forecastDataTransformer = (
+  response: WeatherResponse
+): Forecast => {
   const { main, weather, wind, name } = response;
 
   const forecast: Forecast = {
     weather: {
       description: weather[0].description,
+      icon: weather[0].icon,
       main: weather[0].main,
     },
     wind: {

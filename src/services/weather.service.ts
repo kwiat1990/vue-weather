@@ -1,4 +1,4 @@
-import { transformForecastData } from "@/dataleyer/forecast.layer";
+import { forecastDataTransformer } from "@/datalayer/forecast.layer";
 import { getJSON } from "@/helpers/fetch";
 import { WeatherResponse } from "@/types/api/weather.types";
 import { ApiResponse } from "@/types/apiResponse.types";
@@ -37,7 +37,7 @@ export const useWeatherService = () => {
 
   const handleWeatherResponse = (res: ApiResponse<WeatherResponse>): void => {
     if (res.data) {
-      forecast.value = transformForecastData(res.data);
+      forecast.value = forecastDataTransformer(res.data);
       errorMessage.value = "";
     } else {
       errorMessage.value = res.error;

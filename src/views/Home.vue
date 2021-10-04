@@ -1,23 +1,22 @@
 <template>
   <div class="home">
-    <h1>Home</h1>
-    <div v-if="geoIsLoading">
+    <h1>Your weather forecast</h1>
+
+    <p v-if="geoIsLoading" class="p-4 mb-12 text-white bg-green-600">
       One moment, we are trying to fetch weather data for your location
-    </div>
-    <p v-if="errorToDisplay">{{ errorToDisplay }}</p>
+    </p>
+
+    <p v-if="errorToDisplay" class="p-4 mb-12 text-white bg-red-600">
+      {{ errorToDisplay }}
+    </p>
+
     <Searchbox
-      @on-search="onSearch"
       :city="city"
       :disabled="geoIsLoading"
+      @on-search="onSearch"
     ></Searchbox>
-    <button @click="add(city)">Add City to Favs</button>
-    <button @click="remove(city)">Remove city</button>
-    <button @click="reset">Remove all cities</button>
-    {{ state }}
-    <hr />
-    <Weather :weather="forecast"></Weather>
-    {{ geoCoords }}
-    {{ geoIsLoading }}
+
+    <Weather v-if="forecast" :forecast="forecast" class="mt-12"></Weather>
   </div>
 </template>
 
@@ -37,9 +36,9 @@ export default defineComponent({
     const city = ref("");
 
     const { isLoading, coords, error } = useGeoLocation();
+    const { state, add, remove, reset } = useFavs();
     const { forecast, getWeatheryByCoords, getWeatheryByCity, errorMessage } =
       useWeatherService();
-    const { state, add, remove, reset } = useFavs();
 
     const errorToDisplay = computed(() => {
       const isBeforeWeatherFetch = !forecast.value && !errorMessage.value;
@@ -49,7 +48,9 @@ export default defineComponent({
     const onSearch = (city: string) => getWeatheryByCity(city);
 
     const onInitialGeolocation = () => {
-      if (!forecast.value && coords.value) getWeatheryByCoords(coords.value);
+      if (!forecast.value && coords.value) {
+        getWeatheryByCoords(coords.value);
+      }
       city.value = forecast.value?.city || "";
     };
 

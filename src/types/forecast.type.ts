@@ -12,6 +12,7 @@ export interface ForecastWind {
 
 export interface ForecastWeather {
   main: string;
+  icon: string;
   description: string;
 }
 

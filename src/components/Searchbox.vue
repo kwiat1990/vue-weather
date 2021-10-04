@@ -1,12 +1,28 @@
 <template>
-  <form @submit.prevent="emitSearch">
-    <button type="submit">Search</button>
+  <form
+    @submit.prevent="emitSearch"
+    class="flex items-center justify-center gap-4"
+  >
     <input
-      class="border-2 border-black"
+      class="w-full max-w-lg p-4 shadow-xl borr-2 bor4 der py- rounded-xl"
       type="text"
       v-model.lazy.trim="searchTerm"
       :disabled="disabled"
     />
+    <button
+      type="submit"
+      class="
+        p-4
+        font-bold
+        text-white
+        uppercase
+        bg-blue-700
+        rounded-xl
+        hover:bg-blue-900
+      "
+    >
+      Search
+    </button>
   </form>
 </template>
 
