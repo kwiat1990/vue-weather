@@ -4,7 +4,7 @@
     class="flex items-center justify-center gap-4"
   >
     <input
-      class="w-full max-w-lg p-4 shadow-xl borr-2 bor4 der py- rounded-xl"
+      class="w-full max-w-lg p-4 py-4 bg-white shadow-xl rounded-xl"
       type="text"
       v-model.lazy.trim="searchTerm"
       :disabled="disabled"

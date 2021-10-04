@@ -1,23 +1,37 @@
 <template>
-  <div class="home">
-    <h1>Your weather forecast</h1>
+  <keep-alive>
+    <div class="home">
+      <h1>Your weather forecast</h1>
 
-    <p v-if="geoIsLoading" class="p-4 mb-12 text-white bg-green-600">
-      One moment, we are trying to fetch weather data for your location
-    </p>
+      <p v-if="geoIsLoading" class="p-4 mb-12 text-white bg-green-600">
+        One moment, we are trying to fetch weather data for your location
+      </p>
 
-    <p v-if="errorToDisplay" class="p-4 mb-12 text-white bg-red-600">
-      {{ errorToDisplay }}
-    </p>
+      <p v-if="errorToDisplay" class="p-4 mb-12 text-white bg-red-600">
+        {{ errorToDisplay }}
+      </p>
 
-    <Searchbox
-      :city="city"
-      :disabled="geoIsLoading"
-      @on-search="onSearch"
-    ></Searchbox>
+      <Searchbox
+        :city="city"
+        :disabled="geoIsLoading"
+        @on-search="onSearch"
+      ></Searchbox>
 
-    <Weather v-if="forecast" :forecast="forecast" class="mt-12"></Weather>
-  </div>
+      <Weather v-if="forecast" :forecast="forecast" class="mt-12">
+        <button
+          v-if="!state.has(city)"
+          aria-label="Add city to your fav list"
+          @click.once="add(city)"
+        >
+          <ion-icon
+            name="bookmark-outline"
+            size="large"
+            class="ml-auto mr-0"
+          ></ion-icon>
+        </button>
+      </Weather>
+    </div>
+  </keep-alive>
 </template>
 
 <script lang="ts">
@@ -26,7 +40,8 @@ import Weather from "@/components/Weather.vue";
 import { useGeoLocation } from "@/composables/useGeolocation";
 import { useFavs } from "@/composables/useFavs";
 import { useWeatherService } from "@/services/weather.service";
-import { computed, defineComponent, ref, watchEffect } from "vue";
+import { computed, defineComponent, onMounted, ref, watchEffect } from "vue";
+import { Forecast } from "@/types/forecast.type";
 
 export default defineComponent({
   name: "Home",
@@ -34,22 +49,31 @@ export default defineComponent({
 
   setup() {
     const city = ref("");
+    const forecast = ref<Forecast | null>(null);
 
-    const { isLoading, coords, error } = useGeoLocation();
-    const { state, add, remove, reset } = useFavs();
-    const { forecast, getWeatheryByCoords, getWeatheryByCity, errorMessage } =
+    const { isLoading, coords, error, locate } = useGeoLocation();
+    const { add, state } = useFavs();
+    const { getWeatheryByCoords, getWeatheryByCity, errorMessage } =
       useWeatherService();
+
+    onMounted(() => {
+      locate();
+    });
 
     const errorToDisplay = computed(() => {
       const isBeforeWeatherFetch = !forecast.value && !errorMessage.value;
       return isBeforeWeatherFetch ? error.value?.message : errorMessage.value;
     });
 
-    const onSearch = (city: string) => getWeatheryByCity(city);
+    const onSearch = async (city: string) => {
+      const res = await getWeatheryByCity(city);
+      if (res) forecast.value = res;
+    };
 
-    const onInitialGeolocation = () => {
+    const onInitialGeolocation = async () => {
       if (!forecast.value && coords.value) {
-        getWeatheryByCoords(coords.value);
+        const res = await getWeatheryByCoords(coords.value);
+        if (res) forecast.value = res;
       }
       city.value = forecast.value?.city || "";
     };
@@ -64,11 +88,9 @@ export default defineComponent({
       geoCoords: coords,
       city,
       add,
-      remove,
-      reset,
-      state,
       forecast,
       errorToDisplay,
+      state,
     };
   },
 });

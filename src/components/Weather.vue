@@ -12,6 +12,10 @@
         md:text-left
       "
     >
+      <div class="text-right">
+        <slot></slot>
+      </div>
+
       <div
         class="items-center justify-between gap-8 text-4xl font-bold md:flex"
       >

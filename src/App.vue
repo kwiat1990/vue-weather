@@ -1,7 +1,11 @@
 <template>
   <Header></Header>
   <main class="container prose prose-xl">
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <keep-alive include="Home">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </main>
   <footer class="text-center">
     Mateusz Kwiatkowski &copy; {{ currentYear }}

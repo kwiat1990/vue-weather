@@ -23,25 +23,21 @@ const getByName = (city: string) => {
 // TODO: Perhaps service should only make api calls and use "useForecast" composable to save transformed data
 export const useWeatherService = () => {
   const errorMessage = ref("");
-  const forecast = ref<Forecast | null>(null);
 
   const getWeatheryByCoords = async (coords: Coords) => {
     const res = await getByCoords(coords);
-    handleWeatherResponse(res);
+    return handleWeatherResponse(res);
   };
 
   const getWeatheryByCity = async (city: string) => {
     const res = await getByName(city);
-    handleWeatherResponse(res);
+    return handleWeatherResponse(res);
   };
 
-  const handleWeatherResponse = (res: ApiResponse<WeatherResponse>): void => {
+  const handleWeatherResponse = (res: ApiResponse<WeatherResponse>) => {
+    errorMessage.value = res.error;
     if (res.data) {
-      forecast.value = forecastDataTransformer(res.data);
-      errorMessage.value = "";
-    } else {
-      errorMessage.value = res.error;
-      forecast.value = null;
+      return forecastDataTransformer(res.data);
     }
   };
 
@@ -49,6 +45,5 @@ export const useWeatherService = () => {
     getWeatheryByCoords,
     getWeatheryByCity,
     errorMessage,
-    forecast,
   };
 };

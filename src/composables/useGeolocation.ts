@@ -28,15 +28,18 @@ export const useGeoLocation = () => {
     setLoading(false);
   };
 
-  if (isSupported) {
-    setLoading();
-    navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
-  }
+  const locate = () => {
+    if (isSupported) {
+      setLoading();
+      navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+    }
+  };
 
   return {
     coords,
     error,
     isLoading,
     isSupported,
+    locate,
   };
 };
