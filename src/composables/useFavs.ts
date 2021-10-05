@@ -9,10 +9,10 @@ export const useFavs = () => {
   const remove = (city: string) => state.cities.delete(city);
 
   return {
-    state: readonly(state.cities),
     add,
     clear,
     has,
     remove,
+    state: readonly(state.cities),
   };
 };
