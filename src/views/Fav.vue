@@ -2,7 +2,9 @@
   <div>
     <h1>Favlist</h1>
 
-    <p v-if="errorMessage">{{ errorMessage }}</p>
+    <Alert v-if="errorMessage" :variant="AlertType.ERROR" class="mb-12">
+      {{ errorMessage }}
+    </Alert>
 
     <button
       v-if="state.size > 0"
@@ -30,14 +32,16 @@
 </template>
 
 <script lang="ts">
+import Alert from "@/components/Alert.vue";
 import Weather from "@/components/Weather.vue";
 import { useFavs } from "@/composables/useFavs";
 import { useWeatherService } from "@/services/weather.service";
+import { AlertType } from "@/types/alert.types";
 import { Forecast } from "@/types/forecast.type";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-  components: { Weather },
+  components: { Alert, Weather },
 
   setup() {
     const forecasts = ref<Forecast[]>([]);
@@ -66,6 +70,7 @@ export default defineComponent({
       state,
       errorMessage,
       getForecast,
+      AlertType,
     };
   },
 });

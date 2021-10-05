@@ -19,19 +19,25 @@ describe("Geolocation composable", () => {
   });
 
   it("checks if coordinates matched", () => {
+    const { locate, coords } = useGeoLocation();
     const data = {
-      langtitude: 12,
-      longtitude: 10,
+      latitude: 12,
+      longitude: 10,
     };
 
     getCurrentPositionMock.mockImplementationOnce((success: any) =>
       success({ coords: data })
     );
+    locate();
 
-    expect(useGeoLocation().coords.value).toMatchObject(data);
+    expect(coords.value).toMatchObject({
+      lat: 12,
+      lon: 10,
+    });
   });
 
   it("checks if errors is defined", () => {
+    const { locate, error } = useGeoLocation();
     const data = {
       message: "Geolocation error message",
       code: 1,
@@ -40,7 +46,8 @@ describe("Geolocation composable", () => {
     getCurrentPositionMock.mockImplementationOnce((success: any, error: any) =>
       error(data)
     );
+    locate();
 
-    expect(useGeoLocation().error.value).toMatchObject(data);
+    expect(error.value).toMatchObject(data);
   });
 });

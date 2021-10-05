@@ -17,7 +17,9 @@ export const useGeoLocation = () => {
 
   const onSuccess = (pos: GeolocationPosition) => {
     const { longitude, latitude } = pos.coords;
+
     coords.value = { lon: longitude, lat: latitude };
+    console.log("pos.coords", pos, longitude, latitude, coords.value);
     error.value = null;
     setLoading(false);
   };

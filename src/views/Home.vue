@@ -3,13 +3,13 @@
     <div class="home">
       <h1>Your weather forecast</h1>
 
-      <p v-if="geoIsLoading" class="p-4 mb-12 text-white bg-green-600">
-        One moment, we are trying to fetch weather data for your location
-      </p>
+      <Alert v-if="geoIsLoading" class="mb-12">
+        One moment please, we are trying to fetch weather data for your location
+      </Alert>
 
-      <p v-if="errorToDisplay" class="p-4 mb-12 text-white bg-red-600">
+      <Alert v-if="errorToDisplay" :variant="AlertType.ERROR" class="mb-12">
         {{ errorToDisplay }}
-      </p>
+      </Alert>
 
       <Searchbox
         :city="city"
@@ -35,17 +35,19 @@
 </template>
 
 <script lang="ts">
+import Alert from "@/components/Alert.vue";
 import Searchbox from "@/components/Searchbox.vue";
 import Weather from "@/components/Weather.vue";
 import { useFavs } from "@/composables/useFavs";
 import { useGeoLocation } from "@/composables/useGeolocation";
 import { useWeatherService } from "@/services/weather.service";
+import { AlertType } from "@/types/alert.types";
 import { Forecast } from "@/types/forecast.type";
 import { computed, defineComponent, onMounted, ref, watchEffect } from "vue";
 
 export default defineComponent({
   name: "Home",
-  components: { Searchbox, Weather },
+  components: { Alert, Searchbox, Weather },
 
   setup() {
     const city = ref("");
@@ -91,6 +93,7 @@ export default defineComponent({
       forecast,
       errorToDisplay,
       state,
+      AlertType,
     };
   },
 });
