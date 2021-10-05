@@ -20,24 +20,25 @@
         class="items-center justify-between gap-8 text-4xl font-bold md:flex"
       >
         <div>
-          <div>{{ forecast.city }}</div>
+          <div>{{ forecast?.city }}</div>
           <div class="text-base font-normal">
-            {{ forecast.weather.description }}
+            {{ forecast?.weather?.description }}
           </div>
         </div>
         <img
+          v-if="forecast?.weather?.icon"
           class="block m-auto my-0 md:mr-0"
           alt="current weather"
-          :src="`http://openweathermap.org/img/wn/${forecast.weather.icon}@2x.png`"
+          :src="`http://openweathermap.org/img/wn/${forecast?.weather?.icon}@2x.png`"
         />
-        <div>{{ formatTemperature(forecast.temp.current) }}</div>
+        <div>{{ formatTemperature(forecast?.temp?.current) }}</div>
       </div>
 
       <div class="gap-8 mt-4 md:justify-between md:items-center md:flex">
-        <span>Wind: {{ formatWind(forecast.wind.speed) }}</span>
+        <span>Wind: {{ formatWind(forecast?.wind?.speed) }}</span>
         <div class="mt-2 space-x-8">
-          <span>Low: {{ formatTemperature(forecast.temp.min) }}</span>
-          <span>High: {{ formatTemperature(forecast.temp.max) }}</span>
+          <span>Low: {{ formatTemperature(forecast?.temp?.min) }}</span>
+          <span>High: {{ formatTemperature(forecast?.temp?.max) }}</span>
         </div>
       </div>
     </section>
@@ -64,7 +65,7 @@ export default defineComponent({
     };
 
     const formatWind = (val: number) => {
-      return `${val.toFixed(1)} km/h`;
+      return `${val?.toFixed(1)} km/h`;
     };
 
     return {

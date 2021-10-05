@@ -1,20 +1,25 @@
 <template>
   <Header></Header>
+
   <main class="container prose prose-xl">
+    <h1 v-if="title">{{ title }}</h1>
+
     <router-view v-slot="{ Component }">
       <keep-alive include="Home">
         <component :is="Component" />
       </keep-alive>
     </router-view>
   </main>
+
   <footer class="text-center">
     Mateusz Kwiatkowski &copy; {{ currentYear }}
   </footer>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
 import Header from "@/components/Header.vue";
+import { computed, defineComponent } from "vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -23,9 +28,16 @@ export default defineComponent({
 
   setup() {
     const currentYear = new Date().getFullYear();
+    const route = useRoute();
+
+    const title = computed(() => {
+      return route?.meta?.title;
+    });
 
     return {
       currentYear,
+      route,
+      title,
     };
   },
 });

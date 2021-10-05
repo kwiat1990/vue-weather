@@ -1,7 +1,7 @@
 <template>
-  <nav class="text-center mb-4">
+  <nav class="mb-4 text-center">
     <router-link to="/">Home</router-link>
-    <router-link to="/fav">Favourites</router-link>
+    <router-link to="/fav">Favorites</router-link>
     <router-link to="/about">About</router-link>
   </nav>
 </template>

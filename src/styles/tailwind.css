@@ -20,4 +20,8 @@
   main {
     @apply flex-1;
   }
+  
+  h1 {
+    @apply text-center;
+  }
 }

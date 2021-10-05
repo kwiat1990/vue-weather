@@ -12,10 +12,7 @@ export const forecastDataTransformer = (
       icon: weather[0].icon,
       main: weather[0].main,
     },
-    wind: {
-      speed: wind.speed,
-      deg: wind.deg,
-    },
+    wind,
     city: name,
     temp: {
       current: main.temp,

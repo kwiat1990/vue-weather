@@ -1,72 +1,84 @@
 <template>
   <div>
-    <h1>Favlist</h1>
-
     <Alert v-if="errorMessage" :variant="AlertType.ERROR" class="mb-12">
       {{ errorMessage }}
     </Alert>
 
-    <button
-      v-if="state.size > 0"
-      class="px-4 py-2 mb-4 text-white bg-blue-700 hover:bg-blue-900 rounded-xl"
-      @click="reset"
-    >
-      Remove all cities
-    </button>
-
-    <Weather
-      :forecast="getForecast(city)"
-      v-for="city in state"
-      :key="city"
-      class="mb-8"
-    >
-      <button aria-label="Remove city from your fav list" @click="remove(city)">
-        <ion-icon
-          name="trash-outline"
-          size="large"
-          class="ml-auto mr-0"
-        ></ion-icon>
+    <template v-if="state.size">
+      <button
+        v-if="state.size"
+        class="
+          px-4
+          py-2
+          mb-4
+          text-white
+          bg-blue-700
+          hover:bg-blue-900
+          rounded-xl
+        "
+        @click="clear"
+      >
+        Remove all cities
       </button>
-    </Weather>
+
+      <template v-for="city in state">
+        <Card
+          v-if="getForecast(city)"
+          :forecast="getForecast(city)"
+          :key="city"
+          class="mb-8"
+        >
+          <button
+            aria-label="Remove city from your fav list"
+            @click="remove(city)"
+          >
+            <ion-icon
+              name="trash-outline"
+              size="large"
+              class="ml-auto mr-0"
+            ></ion-icon>
+          </button>
+        </Card>
+      </template>
+    </template>
+
+    <Alert v-else :variant="AlertType.INFO">
+      You do not have any locations yet.
+    </Alert>
   </div>
 </template>
 
 <script lang="ts">
 import Alert from "@/components/Alert.vue";
-import Weather from "@/components/Weather.vue";
+import Card from "@/components/Card.vue";
 import { useFavs } from "@/composables/useFavs";
 import { useWeatherService } from "@/services/weather.service";
 import { AlertType } from "@/types/alert.types";
 import { Forecast } from "@/types/forecast.type";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  components: { Alert, Weather },
+  name: "Fav",
+  components: { Alert, Card },
 
   setup() {
-    const forecasts = ref<Forecast[]>([]);
+    const { state, remove, clear } = useFavs();
+    const { errorMessage, forecasts, getWeatheryByCity } = useWeatherService();
 
-    const { state, remove, reset } = useFavs();
-    const { getWeatheryByCity, errorMessage } = useWeatherService();
-
-    if (state) {
-      state.forEach((city) => {
-        getWeatheryByCity(city as string).then((res) => {
-          if (res) forecasts.value.push(res);
-        });
-      });
+    if (state.size) {
+      state.forEach((city) => getWeatheryByCity(city as string, false));
     }
 
     const getForecast = (name: string): Forecast | [] => {
       return (
-        Array.from(forecasts.value).find(({ city }) => city === name) || []
+        forecasts.value.find(({ city }) => city.toLowerCase() === name) || []
       );
     };
 
     return {
       forecasts,
       remove,
-      reset,
+      clear,
       state,
       errorMessage,
       getForecast,

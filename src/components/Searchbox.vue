@@ -3,12 +3,25 @@
     @submit.prevent="emitSearch"
     class="flex items-center justify-center gap-4"
   >
-    <input
-      class="w-full max-w-lg p-4 py-4 bg-white shadow-xl rounded-xl"
-      type="text"
-      v-model.lazy.trim="searchTerm"
-      :disabled="disabled"
-    />
+    <label for="searchbox" class="sr-only">Search</label>
+
+    <div class="relative w-full max-w-lg">
+      <input
+        class="w-full p-4 py-4 bg-white shadow-inner rounded-xl"
+        type="text"
+        id="searchbox"
+        v-model.trim="searchTerm"
+        :disabled="disabled"
+      />
+      <button type="button" v-show="searchTerm" @click="clear">
+        <ion-icon
+          size="large"
+          name="close-outline"
+          class="absolute transform -translate-y-1/2 top-1/2 right-4"
+        ></ion-icon>
+      </button>
+    </div>
+
     <button
       type="submit"
       class="
@@ -27,16 +40,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watchEffect } from "vue";
+import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   name: "Searchbox",
 
   props: {
-    city: {
-      type: String,
-      default: "",
-    },
     disabled: Boolean,
   },
 
@@ -48,19 +57,19 @@ export default defineComponent({
   setup(props, { emit }) {
     const searchTerm = ref("");
 
-    watchEffect(() => {
-      searchTerm.value = props.city;
-    });
-
     const emitSearch = () => {
       if (searchTerm.value) {
         emit("onSearch", searchTerm.value);
+        clear();
       }
     };
+
+    const clear = () => (searchTerm.value = "");
 
     return {
       emitSearch,
       searchTerm,
+      clear,
     };
   },
 });

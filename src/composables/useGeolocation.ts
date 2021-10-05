@@ -33,7 +33,11 @@ export const useGeoLocation = () => {
   const locate = () => {
     if (isSupported) {
       setLoading();
-      navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+      return navigator.geolocation.getCurrentPosition(
+        onSuccess,
+        onError,
+        options
+      );
     }
   };
 

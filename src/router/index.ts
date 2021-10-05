@@ -5,11 +5,17 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "",
     name: "Home",
+    meta: {
+      title: "Weather around the world",
+    },
     component: Home,
   },
   {
     path: "/fav",
     name: "Fav",
+    meta: {
+      title: "Favorite locations",
+    },
     component: () => import(/* webpackChunkName: "fav" */ "@/views/Fav.vue"),
   },
   {

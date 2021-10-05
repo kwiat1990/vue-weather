@@ -11,4 +11,4 @@ The source code can be seen here: https://github.com/kwiat1990/vue-weather.
 - [Vue.js (v3)](https://vuejs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind (v2)](https://getbootstrap.com/)
-- [Ionic Icons](https://ionic.io/ionicons)‚
+- [Ionic Icons](https://ionic.io/ionicons)

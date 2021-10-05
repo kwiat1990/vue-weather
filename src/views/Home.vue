@@ -1,65 +1,56 @@
 <template>
-  <keep-alive>
-    <div class="home">
-      <h1>Your weather forecast</h1>
+  <div class="home">
+    <Alert v-if="geoIsLoading" class="mb-12">
+      One moment please, we are trying to fetch weather data for your location
+    </Alert>
 
-      <Alert v-if="geoIsLoading" class="mb-12">
-        One moment please, we are trying to fetch weather data for your location
-      </Alert>
+    <Alert v-if="errorToDisplay" :variant="AlertType.ERROR" class="mb-12">
+      {{ errorToDisplay }}
+    </Alert>
 
-      <Alert v-if="errorToDisplay" :variant="AlertType.ERROR" class="mb-12">
-        {{ errorToDisplay }}
-      </Alert>
+    <Searchbox :disabled="geoIsLoading" @on-search="onSearch"></Searchbox>
 
-      <Searchbox
-        :city="city"
-        :disabled="geoIsLoading"
-        @on-search="onSearch"
-      ></Searchbox>
-
-      <Weather v-if="forecast" :forecast="forecast" class="mt-12">
-        <button
-          v-if="!state.has(city)"
-          aria-label="Add city to your fav list"
-          @click.once="add(city)"
-        >
-          <ion-icon
-            name="bookmark-outline"
-            size="large"
-            class="ml-auto mr-0"
-          ></ion-icon>
-        </button>
-      </Weather>
-    </div>
-  </keep-alive>
+    <Card v-if="forecasts[0]" :forecast="forecasts[0]" class="mt-12">
+      <button
+        v-if="!has(city)"
+        aria-label="Add city to your fav list"
+        @click.once="add(city)"
+      >
+        <ion-icon
+          name="bookmark-outline"
+          size="large"
+          class="ml-auto mr-0"
+        ></ion-icon>
+      </button>
+    </Card>
+  </div>
 </template>
 
 <script lang="ts">
 import Alert from "@/components/Alert.vue";
 import Searchbox from "@/components/Searchbox.vue";
-import Weather from "@/components/Weather.vue";
+import Card from "@/components/Card.vue";
 import { useFavs } from "@/composables/useFavs";
 import { useGeoLocation } from "@/composables/useGeolocation";
 import { useWeatherService } from "@/services/weather.service";
 import { AlertType } from "@/types/alert.types";
-import { Forecast } from "@/types/forecast.type";
 import { computed, defineComponent, onMounted, ref, watchEffect } from "vue";
 
 export default defineComponent({
   name: "Home",
-  components: { Alert, Searchbox, Weather },
+  components: { Alert, Searchbox, Card },
 
   setup() {
     const city = ref("");
-    const forecast = ref<Forecast | null>(null);
 
     const { isLoading, coords, error, locate } = useGeoLocation();
-    const { add, state } = useFavs();
-    const { getWeatheryByCoords, getWeatheryByCity, errorMessage } =
+    const { add, has, state } = useFavs();
+    const { errorMessage, forecasts, getWeatheryByCoords, getWeatheryByCity } =
       useWeatherService();
 
     const errorToDisplay = computed(() => {
-      const isBeforeWeatherFetch = !forecast.value && !errorMessage.value;
+      const isBeforeWeatherFetch =
+        !forecasts.value.length && !errorMessage.value;
       return isBeforeWeatherFetch ? error.value?.message : errorMessage.value;
     });
 
@@ -67,22 +58,25 @@ export default defineComponent({
       locate();
     });
 
-    const onSearch = async (city: string) => {
-      const res = await getWeatheryByCity(city);
-      if (res) forecast.value = res;
+    const onSearch = (name: string) => {
+      city.value = name;
+      getWeatheryByCity(name);
+      stopWatcher();
     };
 
-    const onInitialGeolocation = async () => {
-      if (!forecast.value && coords.value) {
-        const res = await getWeatheryByCoords(coords.value);
-        if (res) forecast.value = res;
+    const onInitialGeolocation = () => {
+      if (!forecasts.value.length && coords.value) {
+        getWeatheryByCoords(coords.value);
       }
-      city.value = forecast.value?.city || "";
+      city.value = forecasts.value[0]?.city || "";
     };
 
-    watchEffect(() => {
+    // watchEffect returns a stop handler which can be called to explicitly stop the watcher
+    const stop = watchEffect(() => {
       onInitialGeolocation();
     });
+
+    const stopWatcher = () => !isLoading.value && stop();
 
     return {
       onSearch,
@@ -90,7 +84,8 @@ export default defineComponent({
       geoCoords: coords,
       city,
       add,
-      forecast,
+      has,
+      forecasts,
       errorToDisplay,
       state,
       AlertType,
