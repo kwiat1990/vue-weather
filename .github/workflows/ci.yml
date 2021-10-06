@@ -14,4 +14,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
         env:
           VUE_APP_API_URL: ${{ secrets.VUE_APP_API_URL }}
-          VUE_APP_OPEN_WEATHER_API_KEY: ${{ secrets.VUE_APP_OPEN_WEATHER_API_KEY }}
