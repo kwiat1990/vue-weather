@@ -17,9 +17,7 @@ export const useGeoLocation = () => {
 
   const onSuccess = (pos: GeolocationPosition) => {
     const { longitude, latitude } = pos.coords;
-
     coords.value = { lon: longitude, lat: latitude };
-    console.log("pos.coords", pos, longitude, latitude, coords.value);
     error.value = null;
     setLoading(false);
   };
@@ -33,11 +31,7 @@ export const useGeoLocation = () => {
   const locate = () => {
     if (isSupported) {
       setLoading();
-      return navigator.geolocation.getCurrentPosition(
-        onSuccess,
-        onError,
-        options
-      );
+      navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
     }
   };
 
