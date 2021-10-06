@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 shaddow-xl rounded-xl" :class="styles[variant]">
+  <div class="p-4 text-white shaddow-xl rounded-xl" :class="styles[variant]">
     <slot></slot>
   </div>
 </template>
@@ -13,15 +13,15 @@ export default defineComponent({
 
   props: {
     variant: {
-      type: Object as PropType<AlertType>,
+      type: String as PropType<AlertType>,
       default: () => AlertType.INFO,
     },
   },
 
   setup() {
     const styles = {
-      [AlertType.ERROR]: "text-white bg-red-400",
-      [AlertType.INFO]: "text-white bg-green-400",
+      [AlertType.ERROR]: "bg-red-400",
+      [AlertType.INFO]: "bg-green-400",
     };
 
     return {
