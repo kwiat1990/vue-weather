@@ -25,12 +25,18 @@
             {{ forecast?.weather?.description }}
           </div>
         </div>
-        <img
+        <Icon
+          :icon="c"
+          size="w-12"
+          v-if="forecast?.weather?.icon"
+          class="block m-auto my-0 md:mr-0"
+        ></Icon>
+        <!-- <img
           v-if="forecast?.weather?.icon"
           class="block m-auto my-0 md:mr-0"
           alt="current weather"
           :src="`http://openweathermap.org/img/wn/${forecast?.weather?.icon}@2x.png`"
-        />
+        /> -->
         <div>{{ formatTemperature(forecast?.temp?.current) }}</div>
       </div>
 
@@ -48,8 +54,10 @@
 <script lang="ts">
 import { Forecast } from "@/types/forecast.type";
 import { defineComponent, PropType } from "vue";
+import Icon from "@/components/Icon.vue";
 
 export default defineComponent({
+  components: { Icon },
   props: {
     forecast: {
       type: Object as PropType<Forecast>,
@@ -63,12 +71,14 @@ export default defineComponent({
     const formatTemperature = (temp: number) => {
       return `${Math.floor(temp)} °C`;
     };
+    const c = "c";
 
     const formatWind = (val: number) => {
       return `${val?.toFixed(1)} km/h`;
     };
 
     return {
+      c,
       formatTemperature,
       formatWind,
     };
