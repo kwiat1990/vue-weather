@@ -1,51 +1,52 @@
-import { Coords } from "@/types/coords.type";
+export interface Location {
+  title: string;
+  location_type: string;
+  woeid: number;
+  latt_long: string;
+}
 
 export interface Weather {
-  id: number;
-  main: string;
-  description: string;
-  icon: string;
+  consolidated_weather: ConsolidatedWeather[];
+  time: Date;
+  sun_rise: Date;
+  sun_set: Date;
+  timezone_name: string;
+  parent: ParentLocation;
+  sources: Source[];
+  title: string;
+  location_type: string;
+  woeid: number;
+  latt_long: string;
+  timezone: string;
 }
-
-export interface Main {
-  temp: number;
-  feels_like: number;
-  temp_min: number;
-  temp_max: number;
-  pressure: number;
+export interface ConsolidatedWeather {
+  id: number;
+  weather_state_name: string;
+  weather_state_abbr: string;
+  wind_direction_compass: string;
+  created: Date;
+  applicable_date: string;
+  min_temp: number;
+  max_temp: number;
+  the_temp: number;
+  wind_speed: number;
+  wind_direction: number;
+  air_pressure: number;
   humidity: number;
-}
-
-export interface Wind {
-  speed: number;
-  deg: number;
-}
-
-export interface Clouds {
-  all: number;
-}
-
-export interface Sys {
-  type: number;
-  id: number;
-  message: number;
-  country: string;
-  sunrise: number;
-  sunset: number;
-}
-
-export interface WeatherResponse {
-  coord: Coords;
-  weather: Weather[];
-  base: string;
-  main: Main;
   visibility: number;
-  wind: Wind;
-  clouds: Clouds;
-  dt: number;
-  sys: Sys;
-  timezone: number;
-  id: number;
-  name: string;
-  cod: number;
+  predictability: number;
+}
+
+export interface ParentLocation {
+  title: string;
+  location_type: string;
+  woeid: number;
+  latt_long: string;
+}
+
+export interface Source {
+  title: string;
+  slug: string;
+  url: string;
+  crawl_rate: number;
 }

@@ -5,19 +5,7 @@
     </Alert>
 
     <template v-if="state.size">
-      <button
-        v-if="state.size"
-        class="
-          px-4
-          py-2
-          mb-4
-          text-white
-          bg-blue-700
-          hover:bg-blue-900
-          rounded-xl
-        "
-        @click="clear"
-      >
+      <button v-if="state.size > 1" class="mb-4 button" @click="clear">
         Remove all cities
       </button>
 
@@ -42,24 +30,20 @@
       </template>
     </template>
 
-    <Alert v-else :variant="AlertType.INFO">
-      You do not have any locations yet.
-    </Alert>
+    <p v-else class="text-center">You do not have any locations saved yet.</p>
   </div>
 </template>
 
 <script lang="ts">
-import Alert from "@/components/Alert.vue";
 import Card from "@/components/Card.vue";
 import { useFavs } from "@/composables/useFavs";
 import { useWeatherService } from "@/services/weather.service";
-import { AlertType } from "@/types/alert.types";
 import { Forecast } from "@/types/forecast.type";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Fav",
-  components: { Alert, Card },
+  components: { Card },
 
   setup() {
     const { state, remove, clear } = useFavs();
@@ -82,7 +66,6 @@ export default defineComponent({
       state,
       errorMessage,
       getForecast,
-      AlertType,
     };
   },
 });

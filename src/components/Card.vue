@@ -19,29 +19,27 @@
       <div
         class="items-center justify-between gap-8 text-4xl font-bold md:flex"
       >
-        <div>
+        <div class="mb-4">
           <div>{{ forecast?.city }}</div>
           <div class="text-base font-normal">
             {{ forecast?.weather?.description }}
           </div>
         </div>
         <Icon
-          :icon="c"
-          size="w-12"
           v-if="forecast?.weather?.icon"
-          class="block m-auto my-0 md:mr-0"
+          class="block m-auto mb-4 md:mr-0"
+          :icon="forecast?.weather?.icon"
+          size="w-16"
         ></Icon>
-        <!-- <img
-          v-if="forecast?.weather?.icon"
-          class="block m-auto my-0 md:mr-0"
-          alt="current weather"
-          :src="`http://openweathermap.org/img/wn/${forecast?.weather?.icon}@2x.png`"
-        /> -->
         <div>{{ formatTemperature(forecast?.temp?.current) }}</div>
       </div>
 
       <div class="gap-8 mt-4 md:justify-between md:items-center md:flex">
-        <span>Wind: {{ formatWind(forecast?.wind?.speed) }}</span>
+        <span
+          >Wind: {{ formatWind(forecast?.wind?.speed) }} ({{
+            forecast?.wind?.deg
+          }})</span
+        >
         <div class="mt-2 space-x-8">
           <span>Low: {{ formatTemperature(forecast?.temp?.min) }}</span>
           <span>High: {{ formatTemperature(forecast?.temp?.max) }}</span>
@@ -52,9 +50,9 @@
 </template>
 
 <script lang="ts">
+import Icon from "@/components/Icon.vue";
 import { Forecast } from "@/types/forecast.type";
 import { defineComponent, PropType } from "vue";
-import Icon from "@/components/Icon.vue";
 
 export default defineComponent({
   components: { Icon },
@@ -71,14 +69,12 @@ export default defineComponent({
     const formatTemperature = (temp: number) => {
       return `${Math.floor(temp)} °C`;
     };
-    const c = "c";
 
     const formatWind = (val: number) => {
       return `${val?.toFixed(1)} km/h`;
     };
 
     return {
-      c,
       formatTemperature,
       formatWind,
     };

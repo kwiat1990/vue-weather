@@ -11,8 +11,12 @@
     </router-view>
   </main>
 
-  <footer class="text-center">
-    Mateusz Kwiatkowski &copy; {{ currentYear }}
+  <footer class="p-4 text-center">
+    <p>
+      Powered by
+      <a href="https://www.metaweather.com/" class="underline">Meta Weather</a>
+    </p>
+    <p>Mateusz Kwiatkowski &copy; {{ currentYear }}</p>
   </footer>
 </template>
 

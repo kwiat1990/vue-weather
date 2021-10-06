@@ -25,3 +25,9 @@
     @apply text-center;
   }
 }
+
+@layer components {
+  .button {
+    @apply text-white py-2 px-4 bg-blue-700 rounded-xl hover:bg-blue-900;
+  }
+}

@@ -1,23 +1,27 @@
 import { forecastDataTransformer } from "@/datalayer/forecast.layer";
 import { getJSON } from "@/helpers/fetch";
-import { WeatherResponse } from "@/types/api/weather.types";
+import { Location, Weather } from "@/types/api/weather.types";
 import { ApiResponse } from "@/types/apiResponse.types";
 import { Coords } from "@/types/coords.type";
 import { Forecast } from "@/types/forecast.type";
 import { ref, readonly } from "vue";
 
 const buildURL = (path: string) => {
-  return `weather?${path}&units=metric&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`;
+  return path;
 };
 
-const getByCoords = (coords: Coords) => {
-  return getJSON<WeatherResponse>(
-    buildURL(`lat=${coords.lat}&lon=${coords.lon}`)
+const getLocationByCoords = (coords: Coords) => {
+  return getJSON<Location[]>(
+    buildURL(`search/?lattlong=${coords.lat},${coords.lon}`)
   );
 };
 
-const getByName = (city: string) => {
-  return getJSON<WeatherResponse>(buildURL(`q=${city}`));
+const getLocationByName = (city: string) => {
+  return getJSON<Location[]>(buildURL(`search/?query=${city}`));
+};
+
+const getForecast = (id: string) => {
+  return getJSON<Weather>(buildURL(`${id}/`));
 };
 
 export const useWeatherService = () => {
@@ -26,17 +30,34 @@ export const useWeatherService = () => {
 
   const getWeatheryByCoords = async (coords: Coords, reset = true) => {
     reset && clear();
-    const res = await getByCoords(coords);
-    return handleWeatherResponse(res);
+    const res = await getLocationByCoords(coords);
+    handleLocationResponse(res);
   };
 
   const getWeatheryByCity = async (city: string, reset = true) => {
     reset && clear();
-    const res = await getByName(city);
+    const res = await getLocationByName(city);
+    handleLocationResponse(res);
+  };
+
+  const getWeatherForLocation = async (id: number) => {
+    const res = await getForecast(id.toString());
     return handleWeatherResponse(res);
   };
 
-  const handleWeatherResponse = (res: ApiResponse<WeatherResponse>) => {
+  const handleLocationResponse = (res: ApiResponse<Location[]>) => {
+    if (!res.data?.length) {
+      errorMessage.value = "Oops, this city couldn't be found.";
+    } else {
+      getWeatherForLocation(res.data[0].woeid);
+    }
+
+    if (res.error) {
+      errorMessage.value = res.error;
+    }
+  };
+
+  const handleWeatherResponse = (res: ApiResponse<Weather>) => {
     errorMessage.value = res.error;
     if (res.data) {
       forecasts.value = [...forecasts.value, forecastDataTransformer(res.data)];

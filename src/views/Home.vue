@@ -8,13 +8,17 @@
       {{ errorToDisplay }}
     </Alert>
 
-    <Searchbox :disabled="geoIsLoading" @on-search="onSearch"></Searchbox>
+    <Searchbox
+      :disabled="geoIsLoading"
+      placeholder="Enter a city"
+      @on-search="onSearch"
+    ></Searchbox>
 
     <Card v-if="forecasts[0]" :forecast="forecasts[0]" class="mt-12">
       <button
-        v-if="!has(city)"
+        v-if="!has(forecasts[0].city)"
         aria-label="Add city to your fav list"
-        @click.once="add(city)"
+        @click.once="add(forecasts[0].city)"
       >
         <ion-icon
           name="bookmark-outline"
@@ -28,8 +32,8 @@
 
 <script lang="ts">
 import Alert from "@/components/Alert.vue";
-import Searchbox from "@/components/Searchbox.vue";
 import Card from "@/components/Card.vue";
+import Searchbox from "@/components/Searchbox.vue";
 import { useFavs } from "@/composables/useFavs";
 import { useGeoLocation } from "@/composables/useGeolocation";
 import { useWeatherService } from "@/services/weather.service";

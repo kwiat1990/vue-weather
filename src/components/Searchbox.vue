@@ -1,8 +1,5 @@
 <template>
-  <form
-    @submit.prevent="emitSearch"
-    class="flex items-center justify-center gap-4"
-  >
+  <form @submit.prevent="emitSearch" class="flex items-center justify-center">
     <label for="searchbox" class="sr-only">Search</label>
 
     <div class="relative w-full max-w-lg">
@@ -10,6 +7,7 @@
         class="w-full p-4 py-4 bg-white shadow-inner rounded-xl"
         type="text"
         id="searchbox"
+        :placeholder="placeholder"
         v-model.trim="searchTerm"
         :disabled="disabled"
       />
@@ -22,20 +20,7 @@
       </button>
     </div>
 
-    <button
-      type="submit"
-      class="
-        p-4
-        font-bold
-        text-white
-        uppercase
-        bg-blue-700
-        rounded-xl
-        hover:bg-blue-900
-      "
-    >
-      Search
-    </button>
+    <button type="submit" class="ml-4 button">Search</button>
   </form>
 </template>
 
@@ -47,6 +32,7 @@ export default defineComponent({
 
   props: {
     disabled: Boolean,
+    placeholder: String,
   },
 
   emits: {

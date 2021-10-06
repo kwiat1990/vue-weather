@@ -8,7 +8,7 @@ export const useGeoLocation = () => {
   const isSupported = "geolocation" in navigator;
 
   const options = {
-    enableHighAccuracy: true,
+    enableHighAccuracy: false,
     timeout: 5000,
     maximumAge: 0,
   };

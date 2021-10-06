@@ -7,18 +7,16 @@ export interface Forecast {
 
 export interface ForecastWind {
   speed: number;
-  deg: number;
+  deg: string;
 }
 
 export interface ForecastWeather {
-  main: string;
   icon: string;
   description: string;
 }
 
 export interface ForecastTemp {
   current: number;
-  feelsLike: number;
   min: number;
   max: number;
   pressure: number;
