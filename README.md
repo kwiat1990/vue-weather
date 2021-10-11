@@ -2,7 +2,7 @@
 
 With this mini poject I want to showcase my frontend skillset and the way I think about developing modern apps. 
 
-As matter of preference I like to work with real data, therefore the frontend uses free API from [Meta Weather](https://www.metaweather.com/). 
+As matter of preference I like to work with real data, therefore the frontend uses free API from [Open Weather](https://openweathermap.org/). 
 
 The source code can be seen here: https://github.com/kwiat1990/vue-weather.
 

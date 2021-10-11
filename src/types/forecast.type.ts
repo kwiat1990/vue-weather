@@ -1,24 +1,21 @@
 export interface Forecast {
-  weather: ForecastWeather;
   wind: ForecastWind;
   temp: ForecastTemp;
+  pressure: number;
+  icon: string;
+  humidity: number;
+  description: string;
   city: string;
 }
 
 export interface ForecastWind {
   speed: number;
-  deg: string;
-}
-
-export interface ForecastWeather {
-  icon: string;
-  description: string;
+  deg: number;
+  direction: string;
 }
 
 export interface ForecastTemp {
   current: number;
   min: number;
   max: number;
-  pressure: number;
-  humidity: number;
 }

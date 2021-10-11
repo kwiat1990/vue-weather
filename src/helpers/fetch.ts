@@ -1,9 +1,6 @@
 import { ApiResponse } from "@/types/apiResponse.types";
 
-const API_URL =
-  process.env.NODE_ENV === "production"
-    ? process.env.VUE_APP_API_URL
-    : process.env.BASE_URL + "/api/location";
+const API_URL = process.env.VUE_APP_API_URL;
 
 const request = async <T>(
   endpoint: string,

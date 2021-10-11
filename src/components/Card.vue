@@ -22,13 +22,13 @@
         <div class="mb-4">
           <div>{{ forecast?.city }}</div>
           <div class="text-base font-normal">
-            {{ forecast?.weather?.description }}
+            {{ forecast?.description }}
           </div>
         </div>
         <Icon
-          v-if="forecast?.weather?.icon"
+          v-if="forecast?.icon"
           class="block m-auto mb-4 md:mr-0"
-          :icon="forecast?.weather?.icon"
+          :icon="forecast?.icon"
           size="w-16"
         ></Icon>
         <div>{{ formatTemperature(forecast?.temp?.current) }}</div>
@@ -36,8 +36,8 @@
 
       <div class="gap-8 mt-4 md:justify-between md:items-center md:flex">
         <span
-          >Wind: {{ formatWind(forecast?.wind?.speed) }} ({{
-            forecast?.wind?.deg
+          >Wind: {{ formatWindSpeed(forecast?.wind?.speed) }} ({{
+            forecast?.wind?.direction
           }})</span
         >
         <div class="mt-2 space-x-8">
@@ -70,13 +70,13 @@ export default defineComponent({
       return `${Math.floor(temp)} °C`;
     };
 
-    const formatWind = (val: number) => {
+    const formatWindSpeed = (val: number) => {
       return `${val?.toFixed(1)} km/h`;
     };
 
     return {
       formatTemperature,
-      formatWind,
+      formatWindSpeed,
     };
   },
 });

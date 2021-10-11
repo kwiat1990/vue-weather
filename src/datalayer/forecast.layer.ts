@@ -1,26 +1,29 @@
-import { Weather } from "@/types/api/weather.types";
+import { formatWindDirection } from "@/helpers/formatWindDirection";
+import { iconNameMapper } from "@/helpers/iconsMapper";
+import { WeatherResponse } from "@/types/api/weather.types";
 import { Forecast } from "@/types/forecast.type";
 
-export const forecastDataTransformer = (response: Weather): Forecast => {
-  const { consolidated_weather: weather, title } = response;
+export const forecastDataTransformer = (
+  response: WeatherResponse
+): Forecast => {
+  const { weather, main, name, wind } = response;
   const today = weather[0];
 
   const forecast: Forecast = {
-    city: title,
+    city: name,
     temp: {
-      current: today.the_temp,
-      min: today.min_temp,
-      max: today.max_temp,
-      pressure: today.air_pressure,
-      humidity: today.humidity,
+      current: main.temp,
+      max: main.temp_max,
+      min: main.temp_min,
     },
-    weather: {
-      description: today.weather_state_name,
-      icon: today.weather_state_abbr,
-    },
+    humidity: main.humidity,
+    pressure: main.pressure,
+    description: today.description,
+    icon: iconNameMapper(today.id),
     wind: {
-      speed: today.wind_speed,
-      deg: today.wind_direction_compass,
+      speed: wind.speed,
+      deg: wind.deg,
+      direction: formatWindDirection(wind.deg),
     },
   };
 

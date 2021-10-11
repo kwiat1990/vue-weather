@@ -14,11 +14,11 @@
       @on-search="onSearch"
     ></Searchbox>
 
-    <Card v-if="forecasts[0]" :forecast="forecasts[0]" class="mt-12">
+    <Card v-if="forecast" :forecast="forecast" class="mt-12">
       <button
-        v-if="!has(forecasts[0].city)"
+        v-if="!has(forecast)"
         aria-label="Add city to your fav list"
-        @click.once="add(forecasts[0].city)"
+        @click.once="add(forecast)"
       >
         <ion-icon
           name="bookmark-outline"
@@ -49,12 +49,11 @@ export default defineComponent({
 
     const { isLoading, coords, error, locate } = useGeoLocation();
     const { add, has, state } = useFavs();
-    const { errorMessage, forecasts, getWeatheryByCoords, getWeatheryByCity } =
+    const { errorMessage, forecast, getWeatheryByCoords, getWeatheryByCity } =
       useWeatherService();
 
     const errorToDisplay = computed(() => {
-      const isBeforeWeatherFetch =
-        !forecasts.value.length && !errorMessage.value;
+      const isBeforeWeatherFetch = !forecast.value && !errorMessage.value;
       return isBeforeWeatherFetch ? error.value?.message : errorMessage.value;
     });
 
@@ -69,10 +68,10 @@ export default defineComponent({
     };
 
     const onInitialGeolocation = () => {
-      if (!forecasts.value.length && coords.value) {
+      if (!forecast.value && coords.value) {
         getWeatheryByCoords(coords.value);
       }
-      city.value = forecasts.value[0]?.city || "";
+      city.value = forecast.value?.city || "";
     };
 
     // watchEffect returns a stop handler which can be called to explicitly stop the watcher
@@ -85,11 +84,9 @@ export default defineComponent({
     return {
       onSearch,
       geoIsLoading: isLoading,
-      geoCoords: coords,
-      city,
       add,
       has,
-      forecasts,
+      forecast,
       errorToDisplay,
       state,
       AlertType,

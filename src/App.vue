@@ -14,7 +14,7 @@
   <footer class="p-4 text-center">
     <p>
       Powered by
-      <a href="https://www.metaweather.com/" class="underline">Meta Weather</a>
+      <a href="https://www.openweather.org/" class="underline">Open Weather</a>
     </p>
     <p>Mateusz Kwiatkowski &copy; {{ currentYear }}</p>
   </footer>
