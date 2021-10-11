@@ -21,7 +21,7 @@
         @click.once="add(forecast)"
       >
         <ion-icon
-          name="bookmark-outline"
+          icon="bookmark-outline"
           size="large"
           class="ml-auto mr-0"
         ></ion-icon>

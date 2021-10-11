@@ -5,14 +5,14 @@
         Remove all cities
       </button>
 
-      <template v-for="forecast in state" :key="forecast.name">
+      <template v-for="forecast in state" :key="forecast.city">
         <Card v-if="forecast" :forecast="forecast" class="mb-8">
           <button
             aria-label="Remove city from your fav list"
             @click="remove(forecast)"
           >
             <ion-icon
-              name="trash-outline"
+              icon="trash-outline"
               size="large"
               class="ml-auto mr-0"
             ></ion-icon>
@@ -28,7 +28,6 @@
 <script lang="ts">
 import Card from "@/components/Card.vue";
 import { useFavs } from "@/composables/useFavs";
-import { Forecast } from "@/types/forecast.type";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -46,5 +45,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style></style>
