@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build:deploy": "vue-cli-service build && npm run copy404",
+    "build": "vue-cli-service build && npm run copy404",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "copy404": "cd dist && cp index.html 404.html && cd .."
