@@ -21,7 +21,7 @@
         @click.once="add(forecast)"
       >
         <ion-icon
-          icon="bookmark-outline"
+          name="bookmark-outline"
           size="large"
           class="ml-auto mr-0"
         ></ion-icon>
@@ -38,7 +38,7 @@ import { useFavs } from "@/composables/useFavs";
 import { useGeoLocation } from "@/composables/useGeolocation";
 import { useWeatherService } from "@/services/weather.service";
 import { AlertType } from "@/types/alert.types";
-import { computed, defineComponent, onMounted, ref, watchEffect } from "vue";
+import { computed, defineComponent, ref, watchEffect } from "vue";
 
 export default defineComponent({
   name: "Home",
@@ -57,9 +57,7 @@ export default defineComponent({
       return isBeforeWeatherFetch ? error.value?.message : errorMessage.value;
     });
 
-    onMounted(() => {
-      locate();
-    });
+    locate();
 
     const onSearch = (name: string) => {
       city.value = name;

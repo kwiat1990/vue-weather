@@ -12,7 +12,7 @@
             @click="remove(forecast)"
           >
             <ion-icon
-              icon="trash-outline"
+              name="trash-outline"
               size="large"
               class="ml-auto mr-0"
             ></ion-icon>

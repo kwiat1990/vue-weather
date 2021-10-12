@@ -11,22 +11,45 @@ const weatherCodes = {
   thunderstorm: [200, 201, 202, 210, 211, 212, 221, 230, 231, 232],
 };
 
-const iconsByCodes = {
-  "heavy-clouds": [...weatherCodes.heavyClouds, ...weatherCodes.fog],
-  "heavy-rain": weatherCodes.heavyRain,
-  "light-clouds": weatherCodes.lightClouds,
-  "light-rain": weatherCodes.lightRain,
-  clear: weatherCodes.clear,
-  shower: weatherCodes.shower,
-  sleet: weatherCodes.sleet,
-  snow: weatherCodes.snow,
-  thunderstorm: weatherCodes.thunderstorm,
-};
+const iconsMap = [
+  {
+    name: "clear",
+    codes: weatherCodes.clear,
+  },
+  {
+    name: "shower",
+    codes: weatherCodes.shower,
+  },
+  {
+    name: "sleet",
+    codes: weatherCodes.sleet,
+  },
+  {
+    name: "snow",
+    codes: weatherCodes.snow,
+  },
+  {
+    name: "thunderstorm",
+    codes: weatherCodes.thunderstorm,
+  },
+  {
+    name: "heavy-clouds",
+    codes: [...weatherCodes.heavyClouds, ...weatherCodes.fog],
+  },
+  {
+    name: "heavy-rain",
+    codes: weatherCodes.heavyRain,
+  },
+  {
+    name: "light-clouds",
+    codes: weatherCodes.lightClouds,
+  },
+  {
+    name: "light-rain",
+    codes: weatherCodes.lightRain,
+  },
+];
 
 export const iconNameMapper = (code: number) => {
-  return (
-    Object.keys(iconsByCodes).find((key) =>
-      iconsByCodes[key as keyof typeof iconsByCodes].includes(code)
-    ) || ""
-  );
+  return iconsMap.find((icon) => icon.codes.includes(code))?.name || "clear";
 };
